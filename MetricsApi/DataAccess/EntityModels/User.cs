@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
+//using Dapper.Contrib.Extensions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Dapper.FastCrud;
 
 namespace MetricsApi.DataAccess.EntityModels
 {
