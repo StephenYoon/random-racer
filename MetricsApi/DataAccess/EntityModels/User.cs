@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dapper.Contrib.Extensions;
 
-namespace MetricsApi.EntityModels
+namespace MetricsApi.DataAccess.EntityModels
 {
-    public partial class User
+
+    [Table("User")]
+    public class User
     {
+        [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
