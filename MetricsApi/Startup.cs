@@ -10,9 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+using MetricsApi.Utilities;
 using MetricsApi.DataAccess;
 using MetricsApi.DataAccess.EntityModels;
-using MetricsApi.Utilities;
+using MetricsApi.DataAccess.Repositories;
+using MetricsApi.DataService;
+using MetricsApi.DataService.Models;
 
 namespace MetricsApi
 {
@@ -32,12 +36,12 @@ namespace MetricsApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var settings = _configuration.Get<AppSettings>();
-            services.AddSingleton<IAppSettings>(t => settings);
+            var appSettings = _configuration.Get<AppSettings>();
+            services.AddSingleton<IAppSettings>(t => appSettings);
 
             services.AddTransient<IDbConnectionHelper, DbConnectionHelper>();
-            //var connectionString = settings.RandomRacerDbConnection;
-            //services.AddDbContext<RandomRacerDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

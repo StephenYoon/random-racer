@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MetricsApi.DataService;
+using MetricsApi.DataService.Models;
 
 namespace MetricsApi.Controllers
 {
@@ -10,33 +12,42 @@ namespace MetricsApi.Controllers
     [ApiController]
     public class MetricsController : ControllerBase
     {
-        // GET api/values
+        private readonly IUserService _userService;
+
+        public MetricsController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        // GET api/metrics
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var results = _userService.GetUsers();
+            return results;
         }
 
-        // GET api/values/5
+        // GET api/metrics/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<User> Get(int id)
         {
-            return "value";
+            var results = _userService.GetUser(id);
+            return results;
         }
 
-        // POST api/values
+        // POST api/metrics
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/metrics/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/metrics/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
