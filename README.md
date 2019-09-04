@@ -2,7 +2,7 @@
 A fun application for exploring various backend and frontend technologies.  
 I'm just getting started but you'll see comments and descriptions as I make progress.
   
-The general plan at the moment is to take the concepts from the Android dice game I created a while ago of rolling three dice to determine metrics for your racer.
+The general plan at the moment is to take the concepts from the Android dice game ([Lucky Dice Out](https://play.google.com/store/apps/details?id=yoon.develop.luckydiceout&hl=en)) I created a while ago of rolling three dice to determine metrics for your racer.
   
 This also gives us the opportunity to try out Google's authentication, mainly for the cool factor but also nice to learn.
 
