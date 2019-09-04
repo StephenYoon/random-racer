@@ -6,6 +6,11 @@ The general plan at the moment is to take the concepts from the Android dice gam
   
 This also gives us the opportunity to try out Google's authentication, mainly for the cool factor but also nice to learn.
 
+## Prerequisites
+- .NET Core 2.2
+- Node.js
+- Visual Studio Code or Visual Studio 2017/19
+
 ## Data store
 Initial thoughts are to use a SQL Server database (Azure) for storing the game metric data, however if the free tier fills up quickly I will switch over to Google's Cloud Firestore as it has the ability to keep our data in sync across client apps through realtime listeners.
 
