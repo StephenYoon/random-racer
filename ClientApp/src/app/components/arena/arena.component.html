@@ -1,5 +1,5 @@
 <div id="arena">
-    <div class="card">
-      <div class="card-body bg-info text-white">Basic card</div>
+    <div *ngFor="let dice of playerDiceSet; let i = index">
+      <app-dice [dice]=dice></app-dice>
     </div>
 </div>

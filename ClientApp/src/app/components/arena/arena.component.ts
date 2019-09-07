@@ -10,13 +10,17 @@ import { DiceSetCollection } from '../../data/diceSetCollection'
 })
 export class ArenaComponent implements OnInit {
 
-  private dice1: Dice;
-  private dice2: Dice;
-  private dice3: Dice;
+  public playerDiceSet: Dice[];
+
+  private diceSetCollection: DiceSetCollection = new DiceSetCollection;
   
   constructor() { }
 
   ngOnInit() {
+    this.playerDiceSet = [
+      this.diceSetCollection['regular'].dices[0],      
+      this.diceSetCollection['regular'].dices[1],
+      this.diceSetCollection['regular'].dices[2]
+    ];    
   }
-
 }
