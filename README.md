@@ -26,3 +26,6 @@ This will most likely be Angular as I like the framework for keeping things orga
 
 ## Deployments
 CI/CD will be accomplished with Azure DevOps, where commits to master will trigger new Builds and a successful build will trigger a Release.
+
+## Infrastructure
+This is in the air, not sure at the moment between AWS and Azure. As I get closer to project completion, I will share details on this topic.
