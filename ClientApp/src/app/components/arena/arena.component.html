@@ -1,5 +1,7 @@
 <div id="arena">
-    <div *ngFor="let dice of playerDiceSet; let i = index">
+    <div *ngFor="let dice of getPlayerDiceSet(); let i = index">
       <app-dice [dice]=dice></app-dice>
     </div>
+
+    <button type="button" class="btn btn-info" (click)="rollDice(playerDiceSet)">NOS it!</button>
 </div>
