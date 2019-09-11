@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Dice } from '../../models/dice';
 import { DiceSet } from '../../models/diceSet';
 import { DiceSetCollection } from '../../data/diceSetCollection'
+import { DiceService } from '../../services/dice.service'
+import { Player } from 'src/app/models/player';
 
 @Component({
   selector: 'app-arena',
@@ -10,19 +12,25 @@ import { DiceSetCollection } from '../../data/diceSetCollection'
 })
 export class ArenaComponent implements OnInit {
 
+  public player: Player;
   public playerDiceSet: Dice[];
   public diceSetKey: string = "regular";
 
+  private diceService: DiceService;
   private diceSetCollection: DiceSetCollection = new DiceSetCollection;
   
-  constructor() { }
+  constructor(diceService: DiceService) {
+    this.diceService = diceService;
+  }
 
   ngOnInit() {
     this.playerDiceSet = [
       this.diceSetCollection[this.diceSetKey].dices[0],      
       this.diceSetCollection[this.diceSetKey].dices[1],
       this.diceSetCollection[this.diceSetKey].dices[2]
-    ];    
+    ];
+
+    this.player = this.diceService.getPlayer(1);
   }
 
   getPlayerDiceSet(): Dice[] {

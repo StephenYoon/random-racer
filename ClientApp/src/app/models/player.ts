@@ -1,6 +1,6 @@
 import { PlayerStats } from "./playerStats";
 
-export interface Player {
+export class Player {
   id: number;
   firstname: string;
   lastname: string;

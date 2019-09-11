@@ -1,6 +1,6 @@
 import { Dice } from '../models/dice';
 
-export interface DiceSet {
+export class DiceSet {
     display: string;
     description: string;
     dices: Dice[];
