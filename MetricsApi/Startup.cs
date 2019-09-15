@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ using MetricsApi.DataAccess;
 using MetricsApi.DataAccess.EntityModels;
 using MetricsApi.DataAccess.Repositories;
 using MetricsApi.DataService;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi
 {
@@ -39,16 +40,34 @@ namespace MetricsApi
             var appSettings = _configuration.Get<AppSettings>();
             services.AddSingleton<IAppSettings>(t => appSettings);
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(appSettings.RandomRacerDbConnection));
+
             services.AddTransient<IDbConnectionHelper, DbConnectionHelper>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = false;
+            //});
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<AuthenticationConfig>(_configuration.GetSection("Authentication"));
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
-                    options.ClientId = appSettings.AuthenticationGoogleClientId;
-                    options.ClientSecret = appSettings.AuthenticationGoogleClientSecret;
+                    var clientId = _configuration["AuthenticationGoogleClientId"];
+                    var clientSecret = _configuration["AuthenticationGoogleClientSecret"];
+
+                    options.ClientId = !string.IsNullOrEmpty(clientId) ? clientId : appSettings.AuthenticationGoogleClientId;
+                    options.ClientSecret = !string.IsNullOrEmpty(clientSecret) ? clientSecret : appSettings.AuthenticationGoogleClientSecret;
                 });
         }
 
@@ -61,6 +80,7 @@ namespace MetricsApi
             }
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
