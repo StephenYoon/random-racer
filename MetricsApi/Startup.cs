@@ -43,7 +43,7 @@ namespace MetricsApi
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
 
-            //services.Configure<AuthenticationConfig>(_configuration.GetSection("Authentication")); // TODO: AWS Systems Manager (see Program.cs)
+            services.Configure<AuthenticationConfig>(_configuration.GetSection("Authentication"));
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {

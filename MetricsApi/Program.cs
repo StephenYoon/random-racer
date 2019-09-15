@@ -22,7 +22,7 @@ namespace MetricsApi
                 .ConfigureAppConfiguration(config =>
                 {
                     config.AddJsonFile("appsettings.json");
-                    //config.AddSystemsManager("/RandomRacer"); // TODO: AWS Systems Manager (see Startup.cs)
+                    config.AddSystemsManager("/RandomRacer");
                 })
                 .UseStartup<Startup>();
     }
