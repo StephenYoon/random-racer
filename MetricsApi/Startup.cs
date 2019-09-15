@@ -42,6 +42,14 @@ namespace MetricsApi
             services.AddTransient<IDbConnectionHelper, DbConnectionHelper>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+
+            //services.Configure<AuthenticationConfig>(_configuration.GetSection("Authentication")); // TODO: AWS Systems Manager (see Program.cs)
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = appSettings.AuthenticationGoogleClientId;
+                    options.ClientSecret = appSettings.AuthenticationGoogleClientSecret;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
