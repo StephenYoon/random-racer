@@ -34,13 +34,13 @@ namespace MetricsApi.Controllers
         [Route("/api/login")]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserLogin userLogin, string returnUrl = null)
+        public async Task<IActionResult> Login(UserLogin userLogin)
         {
             var result = await _signInManager.PasswordSignInAsync(userLogin.Email, userLogin.Password, userLogin.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
-                return Redirect(returnUrl);
+                return Ok($"User logged in: {userLogin.Email}");
             }
             //if (result.RequiresTwoFactor)
             //{
@@ -56,6 +56,16 @@ namespace MetricsApi.Controllers
                 _logger.LogInformation($"Invalid login attempt: {userLogin.Email}");
                 return BadRequest("Invalid login attempt.");
             }
+        }
+
+        [HttpPost]
+        [Route("/api/logout")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return Ok("User logged out.");
         }
     }
 }

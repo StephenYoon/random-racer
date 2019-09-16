@@ -40,9 +40,6 @@ namespace MetricsApi
             var appSettings = _configuration.Get<AppSettings>();
             services.AddSingleton<IAppSettings>(t => appSettings);
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(appSettings.RandomRacerDbConnection));
-
             services.AddTransient<IDbConnectionHelper, DbConnectionHelper>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
@@ -52,14 +49,19 @@ namespace MetricsApi
             //    options.User.RequireUniqueEmail = false;
             //});
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.User.RequireUniqueEmail = false;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = false;
+            //})
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             services.Configure<AuthenticationConfig>(_configuration.GetSection("Authentication"));
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(appSettings.RandomRacerDbConnection));
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
