@@ -62,15 +62,34 @@ namespace MetricsApi
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    var clientId = _configuration["AuthenticationGoogleClientId"];
-                    var clientSecret = _configuration["AuthenticationGoogleClientSecret"];
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 3;
 
-                    options.ClientId = !string.IsNullOrEmpty(clientId) ? clientId : appSettings.AuthenticationGoogleClientId;
-                    options.ClientSecret = !string.IsNullOrEmpty(clientSecret) ? clientSecret : appSettings.AuthenticationGoogleClientSecret;
-                });
+                // Lockout settings
+                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                //options.Lockout.MaxFailedAccessAttempts = 10;
+                //options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            //services.AddAuthentication()
+            //    .AddGoogle(options =>
+            //    {
+            //        var clientId = _configuration["AuthenticationGoogleClientId"];
+            //        var clientSecret = _configuration["AuthenticationGoogleClientSecret"];
+
+            //        options.ClientId = !string.IsNullOrEmpty(clientId) ? clientId : appSettings.AuthenticationGoogleClientId;
+            //        options.ClientSecret = !string.IsNullOrEmpty(clientSecret) ? clientSecret : appSettings.AuthenticationGoogleClientSecret;
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

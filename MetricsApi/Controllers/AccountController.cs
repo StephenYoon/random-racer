@@ -30,8 +30,24 @@ namespace MetricsApi.Controllers
             _logger = logger;
         }
 
+        [Route("/api/register")]
         [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(UserLogin model)
+        {
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User created a new account with password: {model.Email}");
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok($"User created: {model.Email}");
+            }
+            return BadRequest($"Could not create user: {model.Email}");
+        }
+
         [Route("/api/login")]
+        [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLogin userLogin)
@@ -58,8 +74,8 @@ namespace MetricsApi.Controllers
             }
         }
 
-        [HttpPost]
         [Route("/api/logout")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
