@@ -74,6 +74,18 @@ namespace MetricsApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> LinkLogin(string provider = "Google")
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            // Request a redirect to the external login provider to link a login for the current user
+            var redirectUrl = Url.Action("localhost:62951");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
+            return new ChallengeResult(provider, properties);
+        }
+
         [Route("/api/logout")]
         [HttpPost]
         [AllowAnonymous]
