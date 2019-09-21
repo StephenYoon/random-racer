@@ -74,6 +74,7 @@ namespace MetricsApi.Controllers
             }
         }
 
+        [Route("/api/login-google")]
         [HttpPost]
         public async Task<IActionResult> LinkLogin(string provider = "Google")
         {
@@ -81,7 +82,7 @@ namespace MetricsApi.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Action("localhost:62951");
+            var redirectUrl = "http://comingsoon/signin-google";
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
         }
