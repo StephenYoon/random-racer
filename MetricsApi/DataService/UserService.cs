@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MetricsApi.DataAccess.Repositories;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi.DataService
 {

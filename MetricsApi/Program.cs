@@ -19,6 +19,11 @@ namespace MetricsApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(config =>
+                {
+                    config.AddJsonFile("appsettings.json");
+                    config.AddSystemsManager("/RandomRacer");
+                })
                 .UseStartup<Startup>();
     }
 }
