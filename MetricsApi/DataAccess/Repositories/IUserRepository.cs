@@ -5,10 +5,10 @@ using MetricsApi.DataAccess.EntityModels;
 
 namespace MetricsApi.DataAccess.Repositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<UserEntity>
     {
-        User GetUser(int id);
+        UserEntity GetUser(int id);
 
-        List<User> GetUsers();
+        List<UserEntity> GetUsers();
     }
 }

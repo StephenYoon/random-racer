@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MetricsApi.DataService;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi.Controllers
 {

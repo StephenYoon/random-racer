@@ -1,34 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using MetricsApi.DataAccess.Repositories;
-using MetricsApi.DataService.Models;
+using MetricsApi.DataAccess.EntityModels;
+using MetricsApi.Models;
 
 namespace MetricsApi.DataService
 {
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
+        private IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public User GetById(int id)
         {
-            var user = _userRepository.GetUser(id);
+            var userEntity = _userRepository.GetUser(id);
+            var user = _mapper.Map<User>(userEntity);
 
-            // TODO: use AutoMapper to map EntityModels to Service.Models
-            return new User { Id = id, FirstName = "Chevy", LastName = "Camaro" };
+            return user;
         }
 
         public List<User> GetAll()
         {
-            var users = _userRepository.GetUsers();
+            var userEntities = _userRepository.GetUsers();
+            var users = _mapper.Map<List<User>>(userEntities);
 
-            // TODO: use AutoMapper to map EntityModels to Service.Models
-            return new List<User> { new User { Id = 123, FirstName = "Chevy", LastName = "Camaro" } };
+            return users;
         }
     }
 }

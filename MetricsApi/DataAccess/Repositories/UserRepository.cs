@@ -9,27 +9,27 @@ using MetricsApi.DataAccess.EntityModels;
 
 namespace MetricsApi.DataAccess.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : Repository<UserEntity>, IUserRepository
     {
         public UserRepository(IDbConnectionHelper connectionHelper) 
             : base(connectionHelper)
         {
         }
 
-        public User GetUser(int id)
+        public UserEntity GetUser(int id)
         {
-            //var user = DbConnection.Get<User>(id);
-            var users = DbConnection.Find<User>(statement => statement
-                .Where($"{nameof(User.Id):C}=@Id")
+            //var user = DbConnection.Get<UserEntity>(id);
+            var users = DbConnection.Find<UserEntity>(statement => statement
+                .Where($"{nameof(UserEntity.Id):C}=@Id")
                 .WithParameters(new { Id = id }));
 
             return users.FirstOrDefault();
         }
 
-        public List<User> GetUsers()
+        public List<UserEntity> GetUsers()
         {
             //var users = DbConnection.GetAll<User>();
-            var users = DbConnection.Find<User>();
+            var users = DbConnection.Find<UserEntity>();
             return users.ToList();
         }
     }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +12,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+using AutoMapper;
 
 using MetricsApi.Utilities;
 using MetricsApi.DataAccess;
 using MetricsApi.DataAccess.EntityModels;
 using MetricsApi.DataAccess.Repositories;
 using MetricsApi.DataService;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi
 {
@@ -38,7 +39,9 @@ namespace MetricsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddAutoMapper(typeof(Startup));
 
             var appSettings = _configuration.Get<AppSettings>();
             services.AddSingleton<IAppSettings>(t => appSettings);

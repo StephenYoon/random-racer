@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi.DataService
 {
