@@ -15,7 +15,7 @@ namespace MetricsApi.DataService
             _userRepository = userRepository;
         }
 
-        public User GetUser(int id)
+        public User GetById(int id)
         {
             var user = _userRepository.GetUser(id);
 
@@ -23,7 +23,7 @@ namespace MetricsApi.DataService
             return new User { Id = id, FirstName = "Chevy", LastName = "Camaro" };
         }
 
-        public List<User> GetUsers()
+        public List<User> GetAll()
         {
             var users = _userRepository.GetUsers();
 

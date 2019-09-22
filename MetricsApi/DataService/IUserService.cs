@@ -7,8 +7,8 @@ namespace MetricsApi.DataService
 {
     public interface IUserService
     {
-        User GetUser(int id);
+        User GetById(int id);
 
-        List<User> GetUsers();
+        List<User> GetAll();
     }
 }

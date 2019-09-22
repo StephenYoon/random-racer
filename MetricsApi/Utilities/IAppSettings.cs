@@ -12,5 +12,7 @@ namespace MetricsApi.Utilities
         string Version { get; }
 
         string RandomRacerDbConnection { get; set; }
+
+        string JwtSecret { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace MetricsApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            var results = _userService.GetUsers();
+            var results = _userService.GetAll();
             return results;
         }
 
@@ -31,7 +31,7 @@ namespace MetricsApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            var results = _userService.GetUser(id);
+            var results = _userService.GetById(id);
             return results;
         }
 
