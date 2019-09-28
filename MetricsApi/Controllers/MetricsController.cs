@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MetricsApi.DataService;
-using MetricsApi.DataService.Models;
+using MetricsApi.Models;
 
 namespace MetricsApi.Controllers
 {
@@ -23,15 +23,15 @@ namespace MetricsApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            var results = _userService.GetUsers();
-            return results;
+            var results = _userService.GetAll();
+            return results.ToList();
         }
 
         // GET api/metrics/5
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            var results = _userService.GetUser(id);
+            var results = _userService.GetById(id);
             return results;
         }
 

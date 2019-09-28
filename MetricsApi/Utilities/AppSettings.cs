@@ -12,7 +12,9 @@ namespace MetricsApi.Utilities
         public string Environment => EnvironmentCode;
 
         public string Version => Assembly.GetAssembly(typeof(AppSettings))?.GetName()?.Version?.ToString(4) ?? "UNKNOWN";
+        
+        public string DbConnection { get; set; }
 
-        public string RandomRacerDbConnection { get; set; }
+        public string JwtSecret { get; set; }
     }
 }

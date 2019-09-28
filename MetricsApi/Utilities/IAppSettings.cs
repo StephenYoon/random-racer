@@ -10,7 +10,9 @@ namespace MetricsApi.Utilities
         string Environment { get; }
 
         string Version { get; }
+        
+        string DbConnection { get; set; }
 
-        string RandomRacerDbConnection { get; set; }
+        string JwtSecret { get; set; }
     }
 }

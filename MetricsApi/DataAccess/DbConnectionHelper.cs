@@ -17,7 +17,7 @@ namespace MetricsApi.DataAccess
 
         public SqlConnection CreateRandomRacerDbConnection()
         {
-            var connectionBuilder = new SqlConnectionStringBuilder(_appSettings.RandomRacerDbConnection);
+            var connectionBuilder = new SqlConnectionStringBuilder(_appSettings.DbConnection);
             return new SqlConnection(connectionBuilder.ToString());
         }
     }
