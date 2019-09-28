@@ -11,7 +11,7 @@ namespace MetricsApi.DataAccess.Repositories
 
         IEnumerable<UserEntity> GetAll();
 
-        void Create(UserEntity userEntity);
+        UserEntity Create(UserEntity userEntity);
 
         void Update(UserEntity userEntity);
 
