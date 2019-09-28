@@ -62,28 +62,34 @@ namespace MetricsApi.DataService
 
             return users;
         }
-
-
+        
         public User Create(User user, string password)
         {
             // validation
             if (string.IsNullOrWhiteSpace(password))
+            {
                 throw new AppException("Password is required");
+            }
 
             if (_userRepository.GetAll().Any(x => x.EmailAddress == user.EmailAddress))
+            {
                 throw new AppException("Email \"" + user.EmailAddress + "\" is already taken");
-
-            var userEntity = _mapper.Map<UserEntity>(user);
-
+            }
+            
+            // generate password hash
             string passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
+            // add new user
+            var userEntity = _mapper.Map<UserEntity>(user);
             userEntity.PasswordHash = passwordHash;
             userEntity.PasswordSalt = passwordSalt;
-
+            userEntity.Created = DateTime.Now;
             _userRepository.Create(userEntity);
 
-            return user;
+            // return newly added user with Id
+            var insertedUser = _mapper.Map<User>(userEntity);
+            return insertedUser;
         }
 
         public void Update(User userParam, string password = null)

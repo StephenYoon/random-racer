@@ -32,9 +32,10 @@ namespace MetricsApi.DataAccess.Repositories
             return users;
         }
 
-        public void Create(UserEntity userEntity)
+        public UserEntity Create(UserEntity userEntity)
         {
             DbConnection.Insert<UserEntity>(userEntity);
+            return userEntity;
         }
 
         public void Update(UserEntity userEntity)
