@@ -61,7 +61,7 @@ namespace MetricsApi.Controllers
             return Ok(new
             {
                 Id = user.Id,
-                Username = user.EmailAddress,
+                EmailAddress = user.EmailAddress,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Token = tokenString
