@@ -24,7 +24,7 @@ namespace MetricsApi.Controllers
         public ActionResult<IEnumerable<User>> Get()
         {
             var results = _userService.GetAll();
-            return results;
+            return results.ToList();
         }
 
         // GET api/metrics/5

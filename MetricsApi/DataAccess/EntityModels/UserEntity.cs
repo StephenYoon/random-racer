@@ -17,6 +17,7 @@ namespace MetricsApi.DataAccess.EntityModels
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? LastUpdated { get; set; }
         public DateTime? LastLogin { get; set; }

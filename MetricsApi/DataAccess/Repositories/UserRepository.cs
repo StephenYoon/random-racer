@@ -16,7 +16,7 @@ namespace MetricsApi.DataAccess.Repositories
         {
         }
 
-        public UserEntity GetUser(int id)
+        public UserEntity GetById(int id)
         {
             //var user = DbConnection.Get<UserEntity>(id);
             var users = DbConnection.Find<UserEntity>(statement => statement
@@ -26,11 +26,25 @@ namespace MetricsApi.DataAccess.Repositories
             return users.FirstOrDefault();
         }
 
-        public List<UserEntity> GetUsers()
+        public IEnumerable<UserEntity> GetAll()
         {
-            //var users = DbConnection.GetAll<User>();
             var users = DbConnection.Find<UserEntity>();
-            return users.ToList();
+            return users;
+        }
+
+        public void Create(UserEntity userEntity)
+        {
+            DbConnection.Insert<UserEntity>(userEntity);
+        }
+
+        public void Update(UserEntity userEntity)
+        {
+            DbConnection.Update<UserEntity>(userEntity);
+        }
+
+        public void Delete(int id)
+        {
+            var isDeleted = DbConnection.Delete<UserEntity>(new UserEntity { Id = id });
         }
     }
 }

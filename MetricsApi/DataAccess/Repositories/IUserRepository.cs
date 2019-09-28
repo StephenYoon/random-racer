@@ -7,8 +7,14 @@ namespace MetricsApi.DataAccess.Repositories
 {
     public interface IUserRepository : IRepository<UserEntity>
     {
-        UserEntity GetUser(int id);
+        UserEntity GetById(int id);
 
-        List<UserEntity> GetUsers();
+        IEnumerable<UserEntity> GetAll();
+
+        void Create(UserEntity userEntity);
+
+        void Update(UserEntity userEntity);
+
+        void Delete(int id);
     }
 }
