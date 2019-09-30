@@ -50,7 +50,7 @@ namespace MetricsApi
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
 
-            var jwtSecret = _configuration.GetSection("JwtSecret").Value;
+            var jwtSecret = appSettings.JwtSecret;
             var key = Encoding.ASCII.GetBytes(jwtSecret);
             services.AddAuthentication(x =>
             {

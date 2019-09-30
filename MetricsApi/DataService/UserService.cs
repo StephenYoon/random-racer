@@ -75,9 +75,9 @@ namespace MetricsApi.DataService
             {
                 throw new AppException("Email \"" + user.EmailAddress + "\" is already taken");
             }
-            
+
             // generate password hash
-            string passwordHash, passwordSalt;
+            byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             // add new user
@@ -97,13 +97,17 @@ namespace MetricsApi.DataService
             var user = _userRepository.GetAll().FirstOrDefault(u => u.Id == userParam.Id);
 
             if (user == null)
+            {
                 throw new AppException("User not found");
+            }
 
             if (userParam.EmailAddress != user.EmailAddress)
             {
                 // EmailAddress has changed so check if the new EmailAddress is already taken
                 if (_userRepository.GetAll().Any(x => x.EmailAddress == userParam.EmailAddress))
+                {
                     throw new AppException("EmailAddress " + userParam.EmailAddress + " is already taken");
+                }
             }
 
             // update user properties
@@ -114,7 +118,7 @@ namespace MetricsApi.DataService
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
             {
-                string passwordHash, passwordSalt;
+                byte[] passwordHash, passwordSalt;
                 CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
                 user.PasswordHash = passwordHash;
@@ -133,7 +137,7 @@ namespace MetricsApi.DataService
             }
         }
 
-        private static void CreatePasswordHash(string password, out string passwordHash, out string passwordSalt)
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
@@ -143,20 +147,19 @@ namespace MetricsApi.DataService
                 var passwordSaltBytes = hmac.Key;
                 var passwordHashBytes = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
-                passwordSalt = ConvertBytesToString(passwordSaltBytes);
-                passwordHash = ConvertBytesToString(passwordHashBytes);
+                passwordSalt = passwordSaltBytes;
+                passwordHash = passwordHashBytes;
             }
         }
 
-        private static bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
             if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
             if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
-            var storedSaltBytes = ConvertStringToBytes(storedSalt);
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSaltBytes))
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 for (int i = 0; i < computedHash.Length; i++)
@@ -168,27 +171,30 @@ namespace MetricsApi.DataService
             return true;
         }
 
-        private static string ConvertBytesToString(byte[] bytes, StringEncodingEnum encoding = StringEncodingEnum.EncodingASCII)
+        private static string ConvertBytesToString(byte[] bytes, StringEncodingEnum encoding = StringEncodingEnum.EncodingUTF8)
         {
-            // Merge all bytes into a string of bytes  
-            var builder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                builder.Append(bytes[i].ToString("x2"));
-            }
+            //// Merge all bytes into a string of bytes  
+            //var builder = new StringBuilder();
+            //for (int i = 0; i < bytes.Length; i++)
+            //{
+            //    builder.Append(bytes[i].ToString("x2"));
+            //}
+            //var conversion = builder.ToString();
 
-            //var bitString = BitConverter.ToString(bytes);
-            var conversion = encoding == StringEncodingEnum.EncodingASCII
-                ? Encoding.ASCII.GetString(bytes, 0, bytes.Length)
-                : Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            //var conversion = BitConverter.ToString(bytes);
+
+            var conversion = encoding == StringEncodingEnum.EncodingUTF8
+                ? Encoding.UTF8.GetString(bytes, 0, bytes.Length)
+                : Encoding.ASCII.GetString(bytes, 0, bytes.Length);
             return conversion;
         }
 
-        private static byte[] ConvertStringToBytes(string input, StringEncodingEnum encoding = StringEncodingEnum.EncodingASCII)
+        private static byte[] ConvertStringToBytes(string input, StringEncodingEnum encoding = StringEncodingEnum.EncodingUTF8)
         {
-            return encoding == StringEncodingEnum.EncodingASCII
-                ? Encoding.ASCII.GetBytes(input)
-                : Encoding.UTF8.GetBytes(input);
+            var conversion = encoding == StringEncodingEnum.EncodingUTF8
+                ? Encoding.UTF8.GetBytes(input)
+                : Encoding.ASCII.GetBytes(input);
+            return conversion;
         }
     }
 }
