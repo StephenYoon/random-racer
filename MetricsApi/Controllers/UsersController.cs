@@ -17,21 +17,21 @@ namespace MetricsApi.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
-        private IMapper _mapper;
-        private readonly AppSettings _appSettings;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly IAppSettings _appSettings;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IAppSettings appSettings)
         {
             _userService = userService;
             _mapper = mapper;
-            _appSettings = appSettings.Value;
+            _appSettings = appSettings;
         }
 
         [AllowAnonymous]
@@ -41,7 +41,9 @@ namespace MetricsApi.Controllers
             var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
 
             if (user == null)
+            {
                 return BadRequest(new { message = "Username or password is incorrect" });
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.JwtSecret);
